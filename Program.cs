@@ -14,30 +14,31 @@ namespace simpleExamProgram
 
             var points = 0;
 
-            //for (int i = 0; i < questions.GetLength(0); i++)
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < questions.GetLength(0); i++)
             {
-                var randomAnswers = RandomAnswers(answers[i]);
+                var randomAnswers = GetRandomAnswers(answers[i]);
                 Console.WriteLine($"Question {i + 1}");
                 Console.WriteLine(questions[i]);
                 PrintAnswers(randomAnswers);
 
-                Console.Write("Your answer: ");
 
-                string answer = String.Empty;
-
+                sbyte answerIndex;
                 while (true)
                 {
-                    answer = Console.ReadLine();
+                    Console.Write("Your answer: ");
 
-                    if (!String.IsNullOrWhiteSpace(answer))
+                    var answer = Console.ReadLine();
+
+                    answerIndex = GetAnswerIndex(answer);
+                    if (answerIndex >= 0)
                         break;
-                    Console.WriteLine("Please enter the answer!");
+                    Console.WriteLine("Please, input correct answer!");
                 }
-
-                var answerIndex = (byte)((answer.ToUpper().ToCharArray()[0]) - 65);
+                 
 
                 Console.Clear();
+
+                Console.WriteLine($"Question {i + 1}");
                 Console.WriteLine(questions[i]);
                 if (randomAnswers[answerIndex] == randomAnswers[3])
                 {
@@ -46,13 +47,18 @@ namespace simpleExamProgram
                 }
                 else
                 {
-                    PrintCorrectAndWrongAnswer(randomAnswers, answerIndex);
+                    PrintCorrectAndWrongAnswer(randomAnswers, (byte)answerIndex);
 
                     if (points != 0)
                         points -= 10;
                 }
 
-                Console.WriteLine("Press enter to continue");
+                if(i == questions.Length - 1)
+                    Console.WriteLine("Press enter to continue");
+                else
+                    Console.WriteLine("Press enter for next question.");
+
+
                 Console.ReadLine();
                 Console.Clear();
             }
@@ -67,7 +73,7 @@ namespace simpleExamProgram
             questions = new string[questionsCount];
             answers = new string[questionsCount][];
 
-            questions[0] = "Bakinin paytaxti haradir?";
+            questions[0] = "Azerbaycanin paytaxti haradir?";
             answers[0] = new string[4];
             answers[0][0] = "Baki";
             answers[0][1] = "Shamaxi";
@@ -80,8 +86,78 @@ namespace simpleExamProgram
             answers[1][1] = "Islam";
             answers[1][2] = "Xristianliq";
             answers[1][3] = answers[1][1]; // correct answer
+
+
+            questions[2] = "Ashagidakilardan hansi low level programlashdirma dilidir?";
+            answers[2] = new string[4];
+            answers[2][0] = "C#";
+            answers[2][1] = "C";
+            answers[2][2] = "Assembly";
+            answers[2][3] = answers[2][2]; // correct answer
+
+            questions[3] = "Schengen'e daxil olmayan olke?";
+            answers[3] = new string[4];
+            answers[3][0] = "Turkiye";
+            answers[3][1] = "Bolqaristan";
+            answers[3][2] = "Yunanistan";
+            answers[3][3] = answers[3][0]; // correct answer
+
+            questions[4] = "Amerika Birleshmish Shtatlarinin ilk prezidenti kimdir?";
+            answers[4] = new string[4];
+            answers[4][0] = "Avraam Linkoln";
+            answers[4][1] = "Con Kennedi";
+            answers[4][2] = "Corc Vashinqton";
+            answers[4][3] = answers[4][2]; // correct answer
+
+            questions[5] = "AXC'nin suqutu?";
+            answers[5] = new string[4];
+            answers[5][0] = "1919";
+            answers[5][1] = "1920";
+            answers[5][2] = "1921";
+            answers[5][3] = answers[5][1]; // correct answer
+
+            questions[6] = "Ashagidakilardan hansi blokchain texnologiyasi ile ishleyir?";
+            answers[6] = new string[4];
+            answers[6][0] = "Mastercard";
+            answers[6][1] = "Paypal";
+            answers[6][2] = "Bitcoin";
+            answers[6][3] = answers[6][2]; // correct answer
+
+            questions[7] = "Paypal'in yaradicilarindandir:";
+            answers[7] = new string[4];
+            answers[7][0] = "Elon Musk";
+            answers[7][1] = "Bill Gates";
+            answers[7][2] = "Jack Ma";
+            answers[7][3] = answers[7][0]; // correct answer
+
+            questions[8] = "Ashagidakilardan hansi emeliyyat sistemi deyil?";
+            answers[8] = new string[4];
+            answers[8][0] = "Mint";
+            answers[8][1] = "ChromeOS";
+            answers[8][2] = "Wine";
+            answers[8][3] = answers[8][2]; // correct answer
+
+            questions[9] = "Ethereum'un yaradicisi kimdir?";
+            answers[9] = new string[4];
+            answers[9][0] = "Sastoshi Nakamoto";
+            answers[9][1] = "Vitalik Buterin";
+            answers[9][2] = "Mark Zuckerberg";
+            answers[9][3] = answers[9][1]; // correct answer
         }
 
+        public static sbyte GetAnswerIndex(string answer)
+        {
+            if (!String.IsNullOrWhiteSpace(answer))
+            {
+                char variant = (char)(answer.ToUpper().ToCharArray()[0]);
+                if (variant.Equals('A') || variant.Equals(('B')) || variant.Equals('C'))
+                {
+                    return (sbyte)(variant - 65);
+                }
+            }
+
+            return -1;
+        }
         public static void PrintAnswers(string[] answers)
         {
             for (int i = 0; i < 3; i++)
@@ -129,7 +205,7 @@ namespace simpleExamProgram
             }
         }
 
-        public static string[] RandomAnswers(string[] answers)
+        public static string[] GetRandomAnswers(string[] answers)
         {
             var random = new Random();
 

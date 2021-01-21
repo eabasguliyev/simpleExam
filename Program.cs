@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,6 +11,8 @@ namespace simpleExamProgram
     {
         static void Main(string[] args)
         {
+            Console.Title = "simpleExam";
+
             GetData(out string[] questions, out string[][] answers);
 
             var points = 0;
@@ -63,10 +66,42 @@ namespace simpleExamProgram
                 Console.Clear();
             }
 
-            Console.WriteLine("Exam ended. Your points : " + points);
-
+            PrintPoint(points);
         }
 
+        public static void PrintPoint(int points)
+        {
+            Console.Write("Exam ended. Your points : ");
+
+            if (points > 90)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+            }
+            else if (points > 80)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+            }
+            else if (points > 70)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            }
+            else if (points > 60)
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+            }
+            else if (points > 50)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+            }
+
+            Console.WriteLine(points);
+            Console.ResetColor();
+
+        }
         public static void GetData(out string[] questions, out string[][] answers)
         {
             const int questionsCount = 10;
